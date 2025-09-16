@@ -18,12 +18,14 @@ function App() {
     // New state to hold trade logs and trading status
     const [tradeLogs, setTradeLogs] = useState([]);
     const [tradingStatus, setTradingStatus] = useState({});
+
+     const API_URL = "https://trading-backend-1-l859.onrender.com";
     
     // ✅ Real-time log streaming
     useEffect(() => {
     let eventSource;
     try {
-        eventSource = new EventSource('https://trading-backend-wnsr.onrender.com/api/stream-logs');
+        eventSource = new EventSource(`${API_URL}/api/stream-logs`);
 
         eventSource.onmessage = (event) => {
             if (event.data) {
@@ -79,7 +81,7 @@ function App() {
         console.log("Attempting to connect with brokers:", selectedBrokers);
         
         try {
-            const response = await fetch('https://trading-backend-wnsr.onrender.com/api/connect-broker', {
+            const response = await fetch(`${API_URL}/api/connect-broker`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ brokers: selectedBrokers })
@@ -163,7 +165,7 @@ const handleTradeToggle = async (index) => {
     if (currentStatus === 'active') {
         try {
             // 🔗 Call backend to disconnect
-            const response = await fetch('https://trading-backend-wnsr.onrender.com/api/disconnect-stock', {
+            const response = await fetch(`${API_URL}/api/disconnect-stock`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -219,7 +221,7 @@ const handleTradeToggle = async (index) => {
         try {
             setTradeLogs(prev => [...prev, "🟢 Starting all trades together..."]);
 
-            const tradeResponse = await fetch('https://trading-backend-wnsr.onrender.com/api/start-all-trading', {
+            const tradeResponse = await fetch(`${API_URL}/api/start-all-trading`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -251,7 +253,7 @@ const handleTradeToggle = async (index) => {
         const symbol = tradingParameters[key]?.symbol;
 
         try {
-            const response = await fetch('https://trading-backend-wnsr.onrender.com/api/close-position', {
+            const response = await fetch(`${API_URL}/api/close-position`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ symbol })
@@ -268,7 +270,7 @@ const handleTradeToggle = async (index) => {
     // Close ALL positions
     const handleCloseAllPositions = async () => {
         try {
-            const response = await fetch('https://trading-backend-wnsr.onrender.com/api/close-all-positions', {
+            const response = await fetch(`${API_URL}/api/close-all-positions`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" }
             });
@@ -322,7 +324,7 @@ const handleTradeToggle = async (index) => {
         }));
 
         try {
-            const response = await fetch(`https://trading-backend-wnsr.onrender.com/api/get-lot-size?symbol=${encodeURIComponent(newStockName)}`);
+            const response = await fetch(`${API_URL}/api/get-lot-size?symbol=${encodeURIComponent(newStockName)}`);
 
             const data = await response.json();
             
