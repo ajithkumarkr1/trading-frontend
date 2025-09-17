@@ -19,7 +19,7 @@ function App() {
     const [tradeLogs, setTradeLogs] = useState([]);
     const [tradingStatus, setTradingStatus] = useState({});
 
-     const API_URL = "https://trading-backend-1-l859.onrender.com";
+     const API_URL = "https://webapp-backend-y4cv.onrender.com";
     
     // ✅ Real-time log streaming
     useEffect(() => {
