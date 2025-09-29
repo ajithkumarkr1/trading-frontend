@@ -60,7 +60,9 @@ const SelectStock = ({ stockCount, tradingParameters, selectedBrokers, onStockCo
         "g": "Groww",
         "5": "5paisa"
     };
-    
+    const connectedBrokers = selectedBrokers.filter(broker => 
+        broker.profileData && broker.profileData.status === 'success'
+    );
     return (
         <div style={{ padding: '20px' }}>
             <h2>Select Stocks</h2>
@@ -144,13 +146,18 @@ const SelectStock = ({ stockCount, tradingParameters, selectedBrokers, onStockCo
                                         style={{ marginLeft: '10px' }}
                                     >
                                         <option value="">Select a broker</option>
-                                        {Object.keys(broker_map).map((brokerKey, idx) => (
-                                            <option key={idx} value={brokerKey}>
-                                                {broker_map[brokerKey]}
+                                        {connectedBrokers.map((broker, idx) => (
+                                            <option key={idx} value={broker.name}>
+                                                {broker_map[broker.name]}
                                             </option>
                                         ))}
                                     </select>
                                 </label>
+                                {connectedBrokers.length === 0 && (
+                                    <p style={{ color: 'red', margin: '5px 0 0 0', fontSize: '12px' }}>
+                                        No brokers connected. Connect on the 'Connect Broker' tab.
+                                    </p>
+                                )}
                             </div>
 
                             {/* Strategy Dropdown */}
